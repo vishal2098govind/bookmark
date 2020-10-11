@@ -15,8 +15,8 @@ export default class SubjectCard extends Component {
               SubTopics
             </button> 
           </Link>
-          <button className='btn btn-info ml-3'>
-            <a className='card-link text-white' href={`https://pyq.ravindrababuravula.com/subject/?cs=${this.props.subject}`}>PYQ</a>
+          <button className='btn btn-success ml-3'>
+            <a className='card-link text-light' href={`https://pyq.ravindrababuravula.com/subject/?cs=${this.props.subject}`}>PYQ</a>
           </button>
         </div>
       </div>
