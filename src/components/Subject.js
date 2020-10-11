@@ -20,8 +20,8 @@ export default class Subject extends Component {
                   </div>
                   <div className='card-body col-md-4'>
                     <div className='d-flex justify-content-between align-items-center'>                      
-                        <button className='btn btn-success text-white'>Notion Links</button>
-                        <button className='btn btn-success text-white'>Bookmarks</button>
+                        <button className='btn btn-dark text-warning border-warning'>Notes</button>
+                        <button className='btn btn-dark text-warning border-warning'>Bookmarks</button>
                       
                     </div>
                   </div>
