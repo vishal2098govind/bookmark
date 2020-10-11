@@ -21,10 +21,8 @@ const subs = [
 export default class Subjects extends Component {
   render() {
     return (
-      <div className="subs my-5">
-        <ul className='list-group subCard'>
-          {subs.map(sub=><li key={sub} className='list-group-item bg-dark m-2 px-4 py-2'><SubjectCard subject={sub}/></li>)}
-        </ul>
+      <div className="subs my-5 subCard">
+          {subs.map(sub=><div key={sub} className='shadow-sm m-2'><SubjectCard subject={sub}/></div>)}
       </div>
     )
   }
