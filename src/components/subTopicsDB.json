@@ -1,0 +1,34 @@
+{
+  "subTopicsDB": [
+      {
+        "sub": "CN",
+        "topics": {
+          "bookmarks": [
+              {
+                "subTopic": "CIDR",
+                "urls": ["url1", "url2"]
+              },
+              {
+                "subTopic": "NL",
+                "urls": ["url1", "url2"]
+              }
+            ]
+        }
+      },
+      {
+        "sub": "OS",
+        "topics": {
+          "bookmarks": [
+              {
+                "subTopic": "CPU Scheduling",
+                "urls": ["url1", "url2"]
+              },
+              {
+                "subTopic": "Synchronization",
+                "urls": ["url1", "url2"]
+              }
+            ]
+        }
+      }
+    ]
+}

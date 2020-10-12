@@ -1,53 +1,34 @@
 import React, { Component } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-  Button,
-} from 'reactstrap';
-import Topics from './Topics.json';
+import SubjectCard from './SubjectCard';
+import '../css/subCard.css';
 
-export default class Subject extends Component {
+const subs = [
+  'Computer-Networks',
+  'Operating-Systems',
+  'Database-Management-System',
+  'Computer-Organization',
+  'Theory-of-Computation',
+  'Compiler-Design',
+  'Digital-Logic-Design',
+  'Data-Structures',
+  'Programming',
+  'Algorithms',
+  'Engineering-Mathematics',
+  'Aptitude',
+];
+
+class Subject extends Component {
   render() {
     return (
-      <Card className='my-5 p-2 bg-dark'>
-        <CardHeader className='bg-dark text-center text-warning'>
-          <h1>{this.props.match.params.id}</h1>
-        </CardHeader>
-        <ListGroup>
-          {Topics[this.props.match.params.id].map((topic) => (
-            <ListGroupItem key={topic}>
-              <Card className='border-dark p-3'>
-                <Row className='row align-items-center'>
-                  <Col md='8'>
-                    <h5 className='text-center'>{topic}</h5>
-                  </Col>
-                  <CardBody className='col-md-4'>
-                    <div className='d-flex justify-content-between align-items-center'>
-                      <Button
-                        color='dark'
-                        className='text-warning border-warning'
-                      >
-                        Notes
-                      </Button>
-                      <Button
-                        color='dark'
-                        className='text-warning border-warning'
-                      >
-                        Bookmarks
-                      </Button>
-                    </div>
-                  </CardBody>
-                </Row>
-              </Card>
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-      </Card>
+      <div className='subs my-5 subCard'>
+        {subs.map(sub => (
+          <div key={sub} className='shadow-sm m-2'>
+            <SubjectCard subject={sub} />
+          </div>
+        ))}
+      </div>
     );
   }
 }
+
+export { Subject, subs };

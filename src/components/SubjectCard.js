@@ -15,7 +15,7 @@ export default class SubjectCard extends Component {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </p>
-          <Link to={`/sub/${this.props.subject}`}>
+          <Link to={`/tp/${this.props.subject}`}>
             <button className='btn btn-dark text-white'>SubTopics</button>
           </Link>
           <button className='btn btn-success ml-3'>
