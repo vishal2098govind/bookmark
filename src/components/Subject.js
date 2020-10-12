@@ -1,36 +1,53 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+  Button,
+} from 'reactstrap';
 import Topics from './Topics.json';
 
-
-
 export default class Subject extends Component {
-  
-
   render() {
     return (
-      <div className='my-5'>
-      <div className="card bg-dark p-2">
-        <div className='card-header bg-dark text-warning border-warning text-center'><h1>{this.props.match.params.id}</h1></div>
-        <ul className="list-group list-group-flush">
-            {Topics[this.props.match.params.id].map(topic=><li key={topic} className="list-group-item p-4 px-5">
-              <div className='card border-dark p-3'>
-                <div className='row align-items-center'>
-                  <div className='col-md-8'>
+      <Card className='my-5 p-2 bg-dark'>
+        <CardHeader className='bg-dark text-center text-warning'>
+          <h1>{this.props.match.params.id}</h1>
+        </CardHeader>
+        <ListGroup>
+          {Topics[this.props.match.params.id].map((topic) => (
+            <ListGroupItem key={topic}>
+              <Card className='border-dark p-3'>
+                <Row className='row align-items-center'>
+                  <Col md='8'>
                     <h5 className='text-center'>{topic}</h5>
-                  </div>
-                  <div className='card-body col-md-4'>
-                    <div className='d-flex justify-content-between align-items-center'>                      
-                        <button className='btn btn-dark text-warning border-warning'>Notes</button>
-                        <button className='btn btn-dark text-warning border-warning'>Bookmarks</button>
-                      
+                  </Col>
+                  <CardBody className='col-md-4'>
+                    <div className='d-flex justify-content-between align-items-center'>
+                      <Button
+                        color='dark'
+                        className='text-warning border-warning'
+                      >
+                        Notes
+                      </Button>
+                      <Button
+                        color='dark'
+                        className='text-warning border-warning'
+                      >
+                        Bookmarks
+                      </Button>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </li>)}
-        </ul>
-      </div>
-      </div>
-    )
+                  </CardBody>
+                </Row>
+              </Card>
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      </Card>
+    );
   }
 }
