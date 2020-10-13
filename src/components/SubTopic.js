@@ -20,6 +20,7 @@ export default class SubTopic extends React.Component {
 
     if (tp.bookmarks.length === 0) {
       const bookmark = new Bookmark(subtopic);
+
       bookmark.add(url);
       tp.bookmarks.push(bookmark);
     } else {
