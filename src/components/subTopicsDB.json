@@ -1,34 +1,57 @@
 {
   "subTopicsDB": [
-      {
-        "sub": "CN",
-        "topics": {
+    {
+      "sub": "CN",
+      "topics": [
+        {
+          "topic": "IP-Addressing",
           "bookmarks": [
-              {
-                "subTopic": "CIDR",
-                "urls": ["url1", "url2"]
-              },
-              {
-                "subTopic": "NL",
-                "urls": ["url1", "url2"]
-              }
-            ]
+            {
+              "subtopic": "Supernetting",
+              "urls": ["url1", "url2"]
+            },
+            {
+              "subtopic": "Subnetting",
+              "urls": []
+            }
+          ]
+        },
+        {
+          "topic": "FCM",
+          "bookmarks": []
         }
-      },
-      {
-        "sub": "OS",
-        "topics": {
+      ]
+    },
+    {
+      "sub": "OS",
+      "topics": [
+        {
+          "topic": "CPU-Scheduling",
           "bookmarks": [
-              {
-                "subTopic": "CPU Scheduling",
-                "urls": ["url1", "url2"]
-              },
-              {
-                "subTopic": "Synchronization",
-                "urls": ["url1", "url2"]
-              }
-            ]
+            {
+              "subTopic": "FCFS",
+              "urls": ["url1", "url2"]
+            },
+            {
+              "subTopic": "SRTF",
+              "urls": ["url1", "url2"]
+            }
+          ]
+        },
+        {
+          "topic": "Synchronization",
+          "bookmarks": [
+            {
+              "subTopic": "Semaphores",
+              "urls": ["url1", "url2"]
+            },
+            {
+              "subTopic": "Dining Philosopher",
+              "urls": ["url1", "url2"]
+            }
+          ]
         }
-      }
-    ]
+      ]
+    }
+  ]
 }

@@ -11,22 +11,13 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
-import AddURL from './AddURL';
 
 class NavBar extends React.Component {
   state = {
     isOpen: false,
-    url: null,
-    Subject: null,
-    Topic: null,
-    subTopic: null,
   };
 
   toggle = () => this.setState({ isOpen: !this.state.isOpen });
-
-  onBookmarkSubmit = (url, Subject, Topic, subTopic) => {
-    this.setState({ url, Subject, Topic, subTopic });
-  };
 
   render() {
     return (
@@ -57,11 +48,6 @@ class NavBar extends React.Component {
                     </Button>
                   </FormGroup>
                 </Form>
-              </NavItem>
-            </Nav>
-            <Nav>
-              <NavItem>
-                <AddURL onBookmarkSubmit={this.onBookmarkSubmit} />
               </NavItem>
             </Nav>
           </Collapse>

@@ -11,7 +11,6 @@ import {
   CustomInput,
   Label,
 } from 'reactstrap';
-
 import { Link } from 'react-router-dom';
 
 import { subs } from './Subject';
@@ -21,25 +20,28 @@ import topicsSubTopics from './topicsSubTopics.json';
 class AddURL extends React.Component {
   state = {
     modal: false,
-    url: '', // Question URL
-    Subject: '', // CO
-    topic: '', // Cache
+    bookmarkUrl: '', // Question URL
+    subject: this.props.subject, // CO
+    topic: topicsSubTopics[this.props.subject], // Cache
     subTopic: '', // Direct Mapping
   };
 
-  topics = topicsSubTopics[subs[0]];
   onChooseSubject = e => {
-    this.setState({ Subject: e.target.value });
-    this.topics = topicsSubTopics[e.target.value];
+    this.setState({
+      subject: e.target.value,
+      topic: topicsSubTopics[e.target.value],
+    });
   };
 
+  topicsSelected = this.state.topic[0];
+
   onBookmarkSubmit = () => {
-    this.props.onBookmarkSubmit(
-      this.state.url,
-      this.state.Subject,
-      this.state.topic,
-      this.state.subTopic
-    );
+    this.props.onBookmarkSubmit({
+      url: this.state.bookmarkUrl,
+      subject: this.state.subject,
+      topic: this.topicsSelected,
+      subtopic: this.state.subTopic,
+    });
     this.toggle();
   };
 
@@ -68,6 +70,7 @@ class AddURL extends React.Component {
                   id='exampleCustomSelect'
                   name='customSelect'
                   onChange={this.onChooseSubject}
+                  defaultValue={this.props.subject}
                 >
                   <option value=''>Select</option>
                   {subs.map(sub => (
@@ -83,10 +86,11 @@ class AddURL extends React.Component {
                   type='select'
                   id='exampleCustomSelect'
                   name='customSelect'
-                  onChange={e => this.setState({ topic: e.target.value })}
+                  onChange={e => (this.topicsSelected = e.target.value)}
+                  defaultValue={this.props.topic}
                 >
                   <option value=''>Select</option>
-                  {this.topics.map(tp => (
+                  {topicsSubTopics[this.props.subject].map(tp => (
                     <option key={tp}>{tp}</option>
                   ))}
                 </CustomInput>
@@ -99,11 +103,13 @@ class AddURL extends React.Component {
               </FormGroup>
               <FormGroup>
                 <Input
-                  onChange={e => this.setState({ url: e.target.value })}
+                  onChange={e => this.setState({ bookmarkUrl: e.target.value })}
                   placeholder='Paste URL'
                 />
               </FormGroup>
-              <Link to={`/tp/${this.state.Subject}/subtp/${this.state.topic}`}>
+              <Link
+                to={`/tp/${this.state.subject}/subtp/${this.topicsSelected}`}
+              >
                 <Button
                   onClick={this.onBookmarkSubmit}
                   color='dark'

@@ -4,24 +4,21 @@ import Topic from './Topics';
 import { Subject } from './Subject';
 import SubTopic from './SubTopic';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import db from '../utils/db';
 
 class App extends React.Component {
-  state = {
-    url: null,
-    Subject: null,
-    Topic: null,
-    subTopic: null,
-  };
-
-  onBookmarkSubmit = (url, Subject, Topic, subTopic) => {
-    this.setState({ url, Subject, Topic, subTopic });
+  componentDidMount = () => {
+    const dbLocal = localStorage.getItem('db');
+    if (!dbLocal) {
+      localStorage.setItem('db', JSON.stringify(db));
+    }
   };
 
   render() {
     return (
       <div>
         <Router>
-          <Nav />
+          <Nav onBookmarkSubmit={this.onBookmarkSubmit} />
           <div className='container'>
             <Switch>
               <Route exact path='/' component={Subject} />
@@ -31,10 +28,11 @@ class App extends React.Component {
                 render={props => (
                   <SubTopic
                     {...props}
-                    subject={this.state.Subject}
-                    topic={this.state.Topic}
-                    subTopic={this.state.subTopic}
-                    url={this.state.url}
+                    subject={props.match.url.substr(
+                      4,
+                      props.match.url.search('/subtp/') - 4
+                    )}
+                    topic={props.match.params.id}
                   />
                 )}
               />
