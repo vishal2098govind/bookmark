@@ -1,4 +1,5 @@
 import React from 'react';
+import Bookmark from '../utils/Bookmark';
 import {
   Button,
   Modal,
@@ -18,11 +19,12 @@ import { subs } from './Subject';
 import topicsSubTopics from './topicsSubTopics.json';
 
 class AddURL extends React.Component {
+  pathname = window.location.href;
   state = {
     modal: false,
     bookmarkUrl: '', // Question URL
-    subject: this.props.subject, // CO
-    topic: topicsSubTopics[this.props.subject], // Cache
+    subject: subs[0], // CO
+    topic: topicsSubTopics[subs[0]], // Cache
     subTopic: '', // Direct Mapping
   };
 
@@ -35,13 +37,48 @@ class AddURL extends React.Component {
 
   topicsSelected = this.state.topic[0];
 
+  setBookmarkDB = (url, subject, topic, subtopic) => {
+    const db = JSON.parse(localStorage.getItem('db'));
+
+    const sub = db.filter(subj => subj.sub === subject)[0];
+
+    const tp = sub.topics.filter(tp => tp.topic === topic)[0];
+
+    if (tp.bookmarks.length === 0) {
+      const bookmark = new Bookmark(subtopic);
+
+      bookmark.add(url);
+      tp.bookmarks.push(bookmark);
+    } else {
+      const sbtp = tp.bookmarks.filter(
+        bm => bm.subTopic.toLowerCase() === subtopic.trim().toLowerCase()
+      );
+      if (sbtp.length === 0) {
+        const bookmark = new Bookmark(subtopic);
+        bookmark.add(url);
+        tp.bookmarks.push(bookmark);
+      } else {
+        sbtp[0].urls.push(url);
+      }
+    }
+
+    localStorage.setItem('db', JSON.stringify(db));
+    return tp.bookmarks;
+  };
+
   onBookmarkSubmit = () => {
-    this.props.onBookmarkSubmit({
-      url: this.state.bookmarkUrl,
-      subject: this.state.subject,
-      topic: this.topicsSelected,
-      subtopic: this.state.subTopic,
-    });
+    this.props.onBookmarkSubmit(
+      this.state.bookmarkUrl,
+      this.state.subTopic,
+      this.state.subject,
+      this.topicsSelected,
+      this.setBookmarkDB(
+        this.state.bookmarkUrl,
+        this.state.subject,
+        this.topicsSelected,
+        this.state.subTopic
+      )
+    );
     this.toggle();
   };
 
@@ -57,20 +94,30 @@ class AddURL extends React.Component {
         >
           Add URL
         </Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Add URL</ModalHeader>
-          <ModalBody>
+        <Modal
+          className='bg-dark p-2'
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+        >
+          <ModalHeader
+            className='bg-secondary border-dark text-dark'
+            toggle={this.toggle}
+          >
+            <h4>Add URL</h4>
+          </ModalHeader>
+          <ModalBody className='bg-secondary text-dark'>
             <Form>
               <FormGroup>
                 <Label for='exampleCustomSelect'>
-                  <h6>Choose Subject</h6>
+                  <h4>Choose Subject</h4>
                 </Label>
                 <CustomInput
                   type='select'
                   id='exampleCustomSelect'
                   name='customSelect'
                   onChange={this.onChooseSubject}
-                  defaultValue={this.props.subject}
+                  className='bg-dark text-light'
+                  defaultValue={subs[0]}
                 >
                   <option value=''>Select</option>
                   {subs.map(sub => (
@@ -80,23 +127,25 @@ class AddURL extends React.Component {
               </FormGroup>
               <FormGroup>
                 <Label for='exampleCustomSelect'>
-                  <h6>Choose Topic</h6>
+                  <h4>Choose Topic</h4>
                 </Label>
                 <CustomInput
                   type='select'
+                  className='bg-dark text-white'
                   id='exampleCustomSelect'
                   name='customSelect'
                   onChange={e => (this.topicsSelected = e.target.value)}
-                  defaultValue={this.props.topic}
+                  defaultValue={topicsSubTopics[subs[0]][0]}
                 >
                   <option value=''>Select</option>
-                  {topicsSubTopics[this.props.subject].map(tp => (
+                  {this.state.topic.map(tp => (
                     <option key={tp}>{tp}</option>
                   ))}
                 </CustomInput>
               </FormGroup>
               <FormGroup>
                 <Input
+                  className='bg-dark text-dark'
                   onChange={e => this.setState({ subTopic: e.target.value })}
                   placeholder='Enter Subtopic'
                 />
@@ -113,14 +162,14 @@ class AddURL extends React.Component {
                 <Button
                   onClick={this.onBookmarkSubmit}
                   color='dark'
-                  className='text-success'
+                  className='text-light'
                 >
-                  Submit
+                  <h4>Submit</h4>
                 </Button>
               </Link>
             </Form>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className='bg-dark'>
             <Button
               color='dark'
               className='text-warning border-warning'

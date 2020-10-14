@@ -1,56 +1,75 @@
-addUrl = db => {
-  const { subject, topic, bookmarkUrl, subTopic } = this.props;
-  if (subject && topic && bookmarkUrl && subTopic) {
-    const sub = db.filter(subj => subj.sub === subject)[0];
+import React from 'react';
+import {
+  Card,
+  CardHeader,
+  Collapse,
+  CardBody,
+  ListGroup,
+  ListGroupItem,
+} from 'reactstrap';
 
-    const tp = sub.topics.filter(tp => tp.topic === topic)[0];
+export default class Bookmarks extends React.Component {
+  state = {
+    collapse: -1,
+  };
 
-    if (tp.bookmarks.length === 0) {
-      const bookmark = new Bookmark(subTopic);
-      bookmark.add(bookmarkUrl);
-      tp.bookmarks.push(bookmark);
-    } else {
-      const sbtp = tp.bookmarks.filter(
-        bm => bm.subTopic.toLowerCase() === subTopic.trim().toLowerCase()
-      );
-      if (sbtp.length === 0) {
-        const bookmark = new Bookmark(subTopic);
-        bookmark.add(bookmarkUrl);
-        tp.bookmarks.push(bookmark);
-      } else {
-        sbtp[0].urls.push(bookmarkUrl);
-      }
-    }
+  toggle = e => {
+    let event = e.target.dataset.event;
+    this.setState({
+      collapse: this.state.collapse === Number(event) ? -1 : Number(event),
+    });
+  };
 
-    localStorage.setItem('db', JSON.stringify(db));
+  render() {
+    const bookmarks = this.props.bm;
+    return (
+      <div>
+        {bookmarks.map((bm, index) => {
+          return (
+            <Card
+              className='p-2 bg-dark'
+              style={{ marginBottom: '1rem' }}
+              key={index}
+            >
+              <CardHeader
+                className='bg-secondary text-dark d-flex align-items-center justify-content-between'
+                style={{ cursor: 'pointer' }}
+                onClick={this.toggle}
+                data-event={index}
+              >
+                <h5 onClick={this.toggle} data-event={index}>
+                  {bm.subTopic}
+                </h5>
+                <i
+                  className={
+                    this.state.collapse === index
+                      ? `fa fa-arrow-up`
+                      : 'fa fa-arrow-down'
+                  }
+                  onClick={this.toggle}
+                  data-event={index}
+                  aria-hidden='true'
+                ></i>
+              </CardHeader>
+              <Collapse isOpen={this.state.collapse === index}>
+                <CardBody className='bg-dark border-white'>
+                  <ListGroup>
+                    {bm.urls.map((url, index) => {
+                      return (
+                        <ListGroupItem key={index} className='border-dark'>
+                          <a href={url} className='text-info'>
+                            <h5>{url.substr(url.search('quiz_name') + 10)}</h5>
+                          </a>
+                        </ListGroupItem>
+                      );
+                    })}
+                  </ListGroup>
+                </CardBody>
+              </Collapse>
+            </Card>
+          );
+        })}
+      </div>
+    );
   }
-};
-
-componentDidUpdate = () => {
-  let db = localStorage.getItem('db');
-
-  if (db) {
-    db = JSON.parse(db);
-    this.addUrl(db);
-  } else {
-    localStorage.setItem('db', JSON.stringify(db));
-    this.addUrl(JSON.parse(localStorage.getItem('db')));
-  }
-  const bookmarks = JSON.parse(localStorage.getItem('db'))
-    .filter(sub => sub.sub === this.state.sub)[0]
-    .topics.filter(tp => tp.topic === this.state.topic);
-
-  if (this.state.bookmarks.toString() !== bookmarks.toString()) {
-    this.setState({ bookmarks });
-  }
-};
-
-componentDidMount = () => {
-  const url = this.props.match.url;
-  const subj = url.substr(4, url.search('/subtp/') - 4);
-  const topic = this.props.match.params.id;
-  const bookmarks = JSON.parse(localStorage.getItem('db'))
-    .filter(sub => sub.sub === subj)[0]
-    .topics.filter(tp => tp.topic === topic);
-  this.setState({ sub: subj, topic, bookmarks });
-};
+}

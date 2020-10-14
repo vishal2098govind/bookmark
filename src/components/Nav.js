@@ -11,17 +11,21 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
-
+import AddURL from './AddURL';
 class NavBar extends React.Component {
   state = {
     isOpen: false,
+  };
+
+  onBookmarkSubmit = (url, subTopic, subject, topic, bookmarks) => {
+    this.props.onBookmarkSubmit(url, subTopic, subject, topic, bookmarks);
   };
 
   toggle = () => this.setState({ isOpen: !this.state.isOpen });
 
   render() {
     return (
-      <div>
+      <div className='sticky-top'>
         <Navbar color='dark' dark expand='md'>
           <NavbarBrand href='/'>
             <h3>BOOKMARK</h3>
@@ -48,6 +52,11 @@ class NavBar extends React.Component {
                     </Button>
                   </FormGroup>
                 </Form>
+              </NavItem>
+            </Nav>
+            <Nav>
+              <NavItem>
+                <AddURL onBookmarkSubmit={this.onBookmarkSubmit} />
               </NavItem>
             </Nav>
           </Collapse>

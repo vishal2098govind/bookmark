@@ -21,8 +21,8 @@ export default class Topics extends Component {
         </CardHeader>
         <ListGroup>
           {topicsSubTopics[this.props.match.params.id].map(topic => (
-            <ListGroupItem key={topic}>
-              <Card className='border-dark p-3'>
+            <ListGroupItem key={topic} className='bg-dark'>
+              <Card className='border-dark bg-secondary p-3'>
                 <Row className='row align-items-center'>
                   <Col md='8'>
                     <h5 className='text-center'>{topic}</h5>
@@ -31,7 +31,7 @@ export default class Topics extends Component {
                     <div className='d-flex justify-content-between align-items-center'>
                       <Button
                         color='dark'
-                        className='text-warning border-warning'
+                        className='text-light border-warning'
                       >
                         Notes
                       </Button>
