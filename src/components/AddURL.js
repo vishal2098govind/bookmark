@@ -145,7 +145,7 @@ class AddURL extends React.Component {
               </FormGroup>
               <FormGroup>
                 <Input
-                  className='bg-dark text-dark'
+                  className='bg-dark text-light'
                   onChange={e => this.setState({ subTopic: e.target.value })}
                   placeholder='Enter Subtopic'
                 />
