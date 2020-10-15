@@ -1,5 +1,4 @@
 import React from 'react';
-import Bookmark from '../utils/Bookmark';
 import {
   Button,
   Modal,
@@ -17,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { subs } from './Subject';
 
 import topicsSubTopics from './topicsSubTopics.json';
+import setBookmarkDB from '../utils/setBookmarkDB';
 
 class AddURL extends React.Component {
   pathname = window.location.href;
@@ -37,42 +37,13 @@ class AddURL extends React.Component {
 
   topicsSelected = this.state.topic[0];
 
-  setBookmarkDB = (url, subject, topic, subtopic) => {
-    const db = JSON.parse(localStorage.getItem('db'));
-
-    const sub = db.filter(subj => subj.sub === subject)[0];
-
-    const tp = sub.topics.filter(tp => tp.topic === topic)[0];
-
-    if (tp.bookmarks.length === 0) {
-      const bookmark = new Bookmark(subtopic);
-
-      bookmark.add(url);
-      tp.bookmarks.push(bookmark);
-    } else {
-      const sbtp = tp.bookmarks.filter(
-        bm => bm.subTopic.toLowerCase() === subtopic.trim().toLowerCase()
-      );
-      if (sbtp.length === 0) {
-        const bookmark = new Bookmark(subtopic);
-        bookmark.add(url);
-        tp.bookmarks.push(bookmark);
-      } else {
-        sbtp[0].urls.push(url);
-      }
-    }
-
-    localStorage.setItem('db', JSON.stringify(db));
-    return tp.bookmarks;
-  };
-
   onBookmarkSubmit = () => {
     this.props.onBookmarkSubmit(
       this.state.bookmarkUrl,
       this.state.subTopic,
       this.state.subject,
       this.topicsSelected,
-      this.setBookmarkDB(
+      setBookmarkDB(
         this.state.bookmarkUrl,
         this.state.subject,
         this.topicsSelected,

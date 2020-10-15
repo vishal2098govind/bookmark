@@ -6,17 +6,27 @@ import {
   CardBody,
   ListGroup,
   ListGroupItem,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+  Row,
+  Col,
 } from 'reactstrap';
-
+import setBookmarkDB from '../utils/setBookmarkDB';
+import { Link } from 'react-router-dom';
 export default class Bookmarks extends React.Component {
   state = {
-    collapse: -1,
+    url: '',
+    urlCollapse: -1,
   };
 
-  toggle = e => {
+  urltoggle = e => {
+    console.log(this.state);
     let event = e.target.dataset.event;
     this.setState({
-      collapse: this.state.collapse === Number(event) ? -1 : Number(event),
+      urlCollapse:
+        this.state.urlCollapse === Number(event) ? -1 : Number(event),
     });
   };
 
@@ -32,33 +42,88 @@ export default class Bookmarks extends React.Component {
               key={index}
             >
               <CardHeader
-                className='bg-secondary text-dark d-flex align-items-center justify-content-between'
+                className='bg-secondary text-dark text-center'
                 style={{ cursor: 'pointer' }}
-                onClick={this.toggle}
+                onClick={this.urltoggle}
                 data-event={index}
               >
-                <h5 onClick={this.toggle} data-event={index}>
-                  {bm.subTopic}
-                </h5>
-                <i
-                  className={
-                    this.state.collapse === index
-                      ? `fa fa-arrow-up`
-                      : 'fa fa-arrow-down'
-                  }
-                  onClick={this.toggle}
-                  data-event={index}
-                  aria-hidden='true'
-                ></i>
+                <Row onClick={this.urltoggle} data-event={index}>
+                  <Col md='8'>
+                    <h5 onClick={this.urltoggle} data-event={index}>
+                      {bm.subTopic}
+                    </h5>
+                  </Col>
+                  <Col
+                    md='4'
+                    className='d-flex justify-content-around align-items-center'
+                    onClick={this.urltoggle}
+                    data-event={index}
+                  >
+                    <i
+                      className={
+                        this.state.urlCollapse === index
+                          ? 'fa fa-minus bg-dark text-white rounded p-2'
+                          : 'fa fa-plus bg-dark text-white rounded p-2'
+                      }
+                      style={{ cursor: 'pointer' }}
+                      onClick={this.urltoggle}
+                      data-event={index}
+                      aria-hidden='true'
+                    ></i>
+                    <i
+                      className={
+                        this.state.urlCollapse === index
+                          ? `fa fa-arrow-up`
+                          : 'fa fa-arrow-down'
+                      }
+                      onClick={this.urltoggle}
+                      data-event={index}
+                      aria-hidden='true'
+                    ></i>
+                  </Col>
+                </Row>
               </CardHeader>
-              <Collapse isOpen={this.state.collapse === index}>
+              <Collapse isOpen={this.state.urlCollapse === index}>
+                <Form>
+                  <FormGroup>
+                    <Input
+                      value={this.state.url}
+                      onChange={e => this.setState({ url: e.target.value })}
+                      placeholder='Paste URL'
+                    />
+                  </FormGroup>
+                  <Link
+                    to={`/tp/${this.props.subject}/subtp/${this.props.topic}`}
+                  >
+                    <Button
+                      onClick={() => {
+                        this.setState({ url: '' });
+                        setBookmarkDB(
+                          this.state.url,
+                          this.props.subject,
+                          this.props.topic,
+                          bm.subTopic
+                        );
+                      }}
+                      color='dark'
+                      className='text-light'
+                    >
+                      Add
+                    </Button>
+                  </Link>
+                </Form>
+              </Collapse>
+              <Collapse isOpen={this.state.urlCollapse === index}>
                 <CardBody className='bg-dark border-white'>
                   <ListGroup>
                     {bm.urls.map((url, index) => {
                       return (
                         <ListGroupItem key={index} className='border-dark'>
                           <a href={url} className='text-info'>
-                            <h5>{url.substr(url.search('quiz_name') + 10)}</h5>
+                            <h5>
+                              {url.substr(url.search('quiz_name') + 10)}{' '}
+                              question on {bm.subTopic}
+                            </h5>
                           </a>
                         </ListGroupItem>
                       );

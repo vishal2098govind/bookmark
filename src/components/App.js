@@ -12,7 +12,6 @@ class App extends React.Component {
     subTopic: null,
     subject: null,
     topic: null,
-    bookmarks: null,
   };
 
   componentDidMount = () => {
@@ -22,8 +21,8 @@ class App extends React.Component {
     }
   };
 
-  onBookmarkSubmit = (url, subTopic, subject, topic, bookmarks) => {
-    this.setState({ url, subTopic, subject, topic, bookmarks });
+  onBookmarkSubmit = (url, subTopic, subject, topic) => {
+    this.setState({ url, subTopic, subject, topic });
   };
 
   render() {
@@ -35,39 +34,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path='/' component={Subject} />
               <Route exact path='/tp/:id' component={Topic} />
-              <Route
-                path='/tp/:id/subtp/:id'
-                render={props => (
-                  <SubTopic
-                    {...props}
-                    subject={
-                      this.state.subject ||
-                      props.match.url.substr(
-                        4,
-                        props.match.url.search('/subtp') - 4
-                      )
-                    }
-                    topic={this.state.topic || props.match.params.id}
-                    subTopic={this.state.subTopic}
-                    url={this.state.url}
-                    bookmarks={
-                      this.state.bookmarks ||
-                      JSON.parse(localStorage.getItem('db'))
-                        .filter(
-                          sub =>
-                            sub.sub ===
-                            props.match.url.substr(
-                              4,
-                              props.match.url.search('/subtp') - 4
-                            )
-                        )[0]
-                        .topics.filter(
-                          tp => tp.topic === props.match.params.id
-                        )[0].bookmarks
-                    }
-                  />
-                )}
-              />
+              <Route path='/tp/:id/subtp/:id' component={SubTopic} />
             </Switch>
           </div>
         </Router>
